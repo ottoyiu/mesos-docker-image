@@ -10,7 +10,7 @@ DEST_DOCKER_IMAGE = "ottoyiu/mesos-docker-image"
 DOCKER_VERSION = "1.10.3"
 
 src_version_re = re.compile(r"^(\d+.\d+.\d+)-.*\.ubuntu1404")
-dst_version_re = re.compile(r"^(\d+.\d+.\d+)-(\d+.\d+.\d+)$")
+dst_version_re = re.compile(r"^(\d+.\d+.\d+)-.*\.ubuntu1404-(\d+.\d+.\d+)$")
 
 
 def get_tags_layer(docker_image, version_re, match_group_idx):

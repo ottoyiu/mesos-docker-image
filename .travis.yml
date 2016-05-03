@@ -5,7 +5,7 @@ python:
 - '3.4'
 before_install:  
 - sudo apt-get update
-- sudo apt-get install docker-engine
+- sudo apt-get install -y docker-engine
 script:
 - export MISSING_TAGS=`python3 compute_missing.py`
 

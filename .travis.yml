@@ -3,9 +3,9 @@ services:
       - docker
 python:
 - '3.4'
-before_install:  
+before_install:
 - sudo apt-get update
-- sudo apt-get install -y docker-engine
+- sudo apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew install docker-engine
 script:
 - export MISSING_TAGS=`python3 compute_missing.py`
 

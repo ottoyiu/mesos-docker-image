@@ -3,7 +3,5 @@ python:
     - "3.4"
 
 script:
-    - export MISSING_TAGS=`python3 compute_missing.py`
+    - python3 compute_missing.py
 
-after_success:
-    - echo $MISSING_TAGS

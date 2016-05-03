@@ -1,7 +1,16 @@
 language: python
+services:
+      - docker
 python:
-    - "3.4"
-
+- '3.4'
 script:
-    - python3 compute_missing.py
-
+- export MISSING_TAGS=`python3 compute_missing.py`
+env:
+  global:
+  - secure: fTb8+I4wudj8LIm+laMNUEjOJQfuA1AnR3ExhLj0yQ60O+n0LfhP16ArrDfrsxktKi8rpkDr/bPxbDctjH+O4PwiwPMtJs4Vum1DNFkdPoESLEtLmCBFxO+HVhEeC/7w5JwBGNrxFlps/rIjJf/lFZehbxmJgYxIsX2eBCn80gbz1cbseqEOnIkAA1de9gE4/+32GiRZkPk7lgWN8JiVm7Wui7wC6DIKXnNOgqFakh6roN6mAbQhhDr0HurQp/IRfFlmdSClxgi0lWpop+XfjpS9C0QM3LwCsuwUjcBbv2/eCONmWwkvAmO1oaVEA7zNazqE1mQh4XQaHXpdhf+EZsYkWd4cQ/kaN3CxOngpAr2uq4tmKVy+nNE5klgiM/pfzl8xWsUar6co0uOEe7GjXua08FWDy8zWfQ48vNJLgerPjhgYXVUAk9ELqMQQN4Gg9t5TB62QjgE93wr4kJlmY//79r+4I2iP/fg6hZzip40Ggo2JbhmqfzNkQjaYmSTau5PnkMejX+ytzL2zgSy3NqXHI+8LIt476oahlDzJgwWYbmc7Ixj2y87WFwxJbXPhdWfCZsOX+HkmmC+T4mJtjtYFk05flUq5/+/rOeeDarKwoZBjxxfPIBv8r9Z5tu+z18CLRBQw7kTQN2X1lN2asihLIRPa+VCZwOLfNHeJHEc=
+  - secure: WvkfoBRM7806rdtxJBkCkzdPJdYT7u1XmxxeXnCtQUoq6JWmiMc3Lf4bd4Qeyi3KzXecPOo+ukZo4i2Aae7QI32oL6U8kZyb+Mzngl+NSRJtfHzqB9dJWgpbmvns9R0CQfchpzTjBi+sskni/sYNTEpNVbxqxx+W3g6sgtembNESnNX4beCjXi6nMa+w8c02ZWkUdpx05OQD7yOAwAKh9juvBIyC0hUqSuOjSf4W1d1kLW13E3jMy+/JwHvRDEv73xZHZdXajaW4rLUlI9oE7yIQLlpC0RDkSSFZ6T+unC4UDUMSYqdlIN1iBsa/P1dBKypzBCgaA2qd4imLCdwDkx+9q8e1SHVixPlhsS93fnw13hcmgWNBJ21ZAFKPwSWzpBgI8/IHzAGMsBm41lPwXckAuCEJCo32JqMLfO/nfJIxLK9XTPIsVt/05wT1WObwYKPwGaxcYNjG4QHV208/hLCfDtcENBkNDN+pzAZGf1WKTrKzgATHr6A/MhzTFCe8HLxiRtj59w/9mKZjh/KeCeX9apzZUb6g8UaSKyWGxJReLVHPxKNiozzNPLLK+SYesvlEtq7sTQob7gsVpGe4z68ZJs7FNBTiRkXY+SCViVQkAiqlRUhr7bkNir17oreQaC1tXmgu2uvwuTwLcuxcTVYIKrGnnW7rTXxI/Yj9adk=
+  - secure: WllLKnEJxKHWnDsTcBMxUBLKQrPZFAIMNX3aZBXbNslop9G6XAWw7PhQsA7Dzyyrbd1sIJRxmyGnQHiHbK8vyON+n8MxhPrqFAFyxDIu5Qq/hKUNuSGgzeCErKLJeWcmQuLJSgMm52peUiqwJhkdj0uO2wpoXK1vc0xoyeKhgDVib5af3GJaqKb0N7uoMwHKN2rp5Cd8J346pz4WADIdMwfIg4BMNYeCjJka/7qklJvhDTrACYOPvQl8rirIc/m/U9N5UreBxkSIOwWs60ONXCogf6irKtx41dydcSinKIA1M7eyVKHQQMlxLellWmL4G37eE1mIwD6uwHfeyNepGIzzFITfxca2I8V3VosKSWjrhAKrcJws/vQt5lr5NyD6bbfWCWrSIXmABi4W9fmmyecsBKhM3LxQt2LJHSWC6CkiTJMZnxCZOyDQyWrEcIPxdSFtVsN+JOldxQR3+UmYeEJDAQ1tE1QcyBQlGiCJhxIrk0bctdu59NNMiLeyEDe6afmB9vwz5daGEhopUZaKfuFZ+Nww7Xci9foDOAuuOihVHV9WUSLfVioa8+EhMiPlufWsmDg/w9Mc2+WlxsE2c1sm9g5NoLkKj5SDOvQGYADlo8E09HlN8uV33RVLVVMKNM7A1N9rD0IhWykCe2l3zWxu3aB+JjTuxleRWnR+Fd8=
+after_install:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    - for tag in $MISSING_TAGS; do docker build -t ottoyiu/mesos-docker-image:$tag --build-arg mesos_version=`cut -d '-' -f 1 - <<< "$tag"` --build-arg docker_version=`cut -d '-' -f 2 - <<< "$tag" .`; done
+    - for tag in $MISSING_TAGS: do docker push ottoyiu/mesos-docker-image:$tag; done

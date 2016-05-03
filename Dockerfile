@@ -1,6 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER Otto Yiu <me@ottoyiu.com>
 
+ARG docker_version
+ARG mesos_version
+
 ENV docker_version ${docker_version}-0~trusty
 ENV mesos_version ${mesos_version}
 

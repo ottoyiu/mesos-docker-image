@@ -13,4 +13,4 @@ env:
 after_install:
     - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
     - for tag in $MISSING_TAGS; do docker build -t ottoyiu/mesos-docker-image:$tag --build-arg mesos_version=`cut -d '-' -f 1 - <<< "$tag"` --build-arg docker_version=`cut -d '-' -f 2 - <<< "$tag" .`; done
-    - for tag in $MISSING_TAGS: do docker push ottoyiu/mesos-docker-image:$tag; done
+    - for tag in $MISSING_TAGS; do docker push ottoyiu/mesos-docker-image:$tag; done

@@ -7,7 +7,7 @@ from urllib.request import urlopen
 
 SOURCE_DOCKER_IMAGE = "mesosphere/mesos"
 DEST_DOCKER_IMAGE = "ottoyiu/mesos-docker-image"
-DOCKER_VERSION = "1.10.3"
+DOCKER_VERSION = "1.11.2"
 
 src_version_re = re.compile(r"^(\d+.\d+.\d+)-.*\.ubuntu1404")
 dst_version_re = re.compile(r"^(\d+.\d+.\d+)-.*\.ubuntu1404-(\d+.\d+.\d+)$")
